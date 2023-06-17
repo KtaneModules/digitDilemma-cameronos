@@ -31,10 +31,8 @@ public class DigitDilemma : MonoBehaviour {
   //Changing the keypads
   private int buttonNumber;
   private int materialNum;
-  private int failButton;
   private int[] buttonSequence;
   private int buttonSequenceIndex = 0;
-  string[] buttonLabels = { "Button 1", "Button 2", "Button 3", "Button 4" };
   //Num display
   private int stage = 0;
   private string targetNumber;
@@ -105,7 +103,7 @@ public class DigitDilemma : MonoBehaviour {
             else
             {
                 Audio.PlaySoundAtTransform("Strike", DisplayTexts[0].transform);
-                Debug.LogFormat("[Digit Dilemma " + "#" + ModuleId + "] Strike! Button #" + failButton + " was pressed. Restarting stages.", ModuleId);
+                Debug.LogFormat("[Digit Dilemma " + "#" + ModuleId + "] Strike! Button #" + buttonIndex + " was pressed. Restarting stages.", ModuleId);
                 RestartStages();
                 Strike();
                 return; // Exit the method to prevent further execution
@@ -128,7 +126,7 @@ public class DigitDilemma : MonoBehaviour {
           else
           {
               Audio.PlaySoundAtTransform("Strike", DisplayTexts[0].transform);
-              Debug.LogFormat("[Digit Dilemma " + "#" + ModuleId + "] Strike! Button #" + failButton + " was pressed. Restarting stages.", ModuleId);
+              Debug.LogFormat("[Digit Dilemma " + "#" + ModuleId + "] Strike! Button #" + buttonIndex + " was pressed. Restarting stages.", ModuleId);
               RestartStages();
               Strike();
               return;
@@ -154,12 +152,11 @@ public class DigitDilemma : MonoBehaviour {
         Keypads[2].material = KeypadCorrect;
         Keypads[3].material = KeypadCorrect;
         moduleButtonSolve = true;
-        Keypads[materialNum].material = KeypadCorrect;
       }
       else
       {
           Audio.PlaySoundAtTransform("Strike", DisplayTexts[0].transform);
-          Debug.LogFormat("[Digit Dilemma " + "#" + ModuleId + "] Strike! Button #" + failButton + " was pressed. Restarting stages.", ModuleId);
+          Debug.LogFormat("[Digit Dilemma " + "#" + ModuleId + "] Strike! Button #" + buttonIndex + " was pressed. Restarting stages.", ModuleId);
           RestartStages();
           Strike();
           return; // Exit the method to prevent further execution
@@ -206,6 +203,11 @@ else
           yield return null;
       }
       DisplayTexts[0].text = originalText;
+      Keypads[0].material = KeypadCorrect;
+      Keypads[1].material = KeypadCorrect;
+      Keypads[2].material = KeypadCorrect;
+      Keypads[3].material = KeypadCorrect;
+      //ensuring that ALL green regardless of what happens after the seconds
   }
 
   private char GetRandomCharacter()
@@ -225,6 +227,7 @@ void StageLogging()
 
 void RestartStages()
 {
+  GenerateNumber();
   numberDisplayed = false;
   stage = 0;
   DisplayTexts[0].text = "";
@@ -362,20 +365,52 @@ IEnumerator GreenKeypadFlash()
       {
           int solvedModuleCount = BombInfo.GetSolvedModuleNames().Count;
           int batteryCount = BombInfo.GetBatteryCount();
+          int strikeCount = BombInfo.GetStrikes();
 
           int sumOfDigits = targetNumber.Sum(c => int.Parse(c.ToString()));
 
           if (sumOfDigits % 2 == 0)
           {
-              buttonNumber = (sumOfDigits / (solvedModuleCount + 1)) % 4 + 1;
+              int divisor = solvedModuleCount + 1 + strikeCount;
+              int result = sumOfDigits / divisor;
+
+              while (result > 4)
+              {
+                  result -= 4;
+              }
+              while (result < 1)
+              {
+                  result += 4;
+              }
+
+              buttonNumber = result;
           }
           else
           {
-              buttonNumber = (sumOfDigits * batteryCount) % 4 + 1;
+              int result = sumOfDigits * batteryCount;
+
+              while (result > 4)
+              {
+                  result -= 4;
+              }
+              while (result < 1)
+              {
+                  if (BombInfo.GetSerialNumberLetters().Any(x => x.EqualsAny('A', 'E', 'I', 'O', 'U')))
+                  {
+                      result += 4;
+                  }
+                  else
+                  {
+                      result = 1;
+                  }
+              }
+
+              buttonNumber = result;
           }
 
           buttonSequence = new int[] { buttonNumber };
       }
+
 
    void OnDestroy () { //Shit you need to do when the bomb ends
 
@@ -471,3 +506,5 @@ IEnumerator ProcessTwitchCommand(string Command) {
      yield return null;
    }
 }
+
+//YOU! WHY DO YOU OWN THE WORLD!??! HOW DO YOU OWN DISORDER!?!?

@@ -259,7 +259,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1001 &1785958493
+--- !u!1001 &1094089197
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -379,6 +379,11 @@ Prefab:
       propertyPath: AudioClips.Array.data[4]
       value: 
       objectReference: {fileID: 8300000, guid: 3c5059df70f4e4f44b68bb15c4fdbba3, type: 3}
+    - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
+        type: 2}
+      propertyPath: BombSize
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8814ea52310d2614a9feda02ec355ae4, type: 2}
   m_IsPrefabParent: 0

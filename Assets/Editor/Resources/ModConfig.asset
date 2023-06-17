@@ -14,10 +14,11 @@ MonoBehaviour:
   id: digitDilemma
   title: Digit Dilemma
   author: cameron
-  description: "Digit Dilemma 1.0\r\n\"We ran up them digits, we ran up the money\"\r\n\r\nSelect
-    the correct keypad based on a mathemathical calculation deriving from edgework
-    and a number provided on a display.\r\n3 stages, if you strike once, the loop
-    is reset.\r\n\r\nModule ID: digitDilemma\r\nCreated by, Idea: cameronos"
+  description: "Digit Dilemma 1.4\n\"We ran up them digits, we ran up the money\"
+    - Young Thug\r\n\r\nSelect the correct keypad based on a mathemathical calculation
+    deriving from edgework and a number provided on a display.\r\n3 stages, if you
+    strike once, the loop is reset.\r\n\r\nModule ID: digitDilemma\r\nCreated by,
+    Idea: cameronos"
   version: 1.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 0cb7544755c5c284daae7f0a01aee04a, type: 3}
